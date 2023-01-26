@@ -19,6 +19,12 @@ function Board({ cells }) {
   );
 }
 
+function random_letter() {
+  const upper_letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  let i = Math.floor(Math.random() * upper_letters.length);
+  return upper_letters.charAt(i);
+}
+
 export default function App() {
   const [cells] = useState(
     Array(9)
