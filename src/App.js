@@ -1,4 +1,6 @@
 import { useState } from "react";
+
+import { getWords, placeWord } from "./Words";
 import "./styles.css";
 
 function Square({ value }) {
@@ -25,47 +27,6 @@ function generate_empty_cells(numRows, numCols) {
     .map(() => new Array(numCols).fill(" "));
 }
 
-function get_words() {
-  return ["ALPHA", "BRAVO", "CHARLIE", "DELTA", "ECHO", "FOXTROT"];
-}
-
-function random_direction() {
-  return Math.random() < 0.5;
-}
-
-function random_coordinate(numRows, numCols) {
-  const row = Math.floor(Math.random() * numRows);
-  const col = Math.floor(Math.random() * numCols);
-  return [row, col];
-}
-
-function place_word(numRows, numCols, cells, word) {
-  const isVertical = random_direction();
-  const [row, col] = random_coordinate(numRows, numCols);
-
-  if (isVertical && numRows - row >= word.length) {
-    for (let i = 0; i < word.length; i++) {
-      if (cells[row + i][col] !== " " && cells[row + i][col] !== word[i]) {
-        return false;
-      }
-    }
-    [...word].map((c, i) => (cells[row + i][col] = c));
-    return true;
-  }
-
-  if (!isVertical && numCols - col >= word.length) {
-    for (let i = 0; i < word.length; i++) {
-      if (cells[row][col + i] !== " " && cells[row][col + i] !== word[i]) {
-        return false;
-      }
-    }
-    [...word].map((c, i) => (cells[row][col + i] = c));
-    return true;
-  }
-
-  return false;
-}
-
 function random_letter() {
   const upper_letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   let i = Math.floor(Math.random() * upper_letters.length);
@@ -88,9 +49,9 @@ export default function Game() {
   const [numRows, numCols] = [12, 12];
   const cells = generate_empty_cells(numRows, numCols);
 
-  const words = get_words();
+  const words = getWords();
   const placed_words = words.filter((word) =>
-    place_word(numRows, numCols, cells, word)
+    placeWord(numRows, numCols, cells, word)
   );
 
   fill_empty_cells(numRows, numCols, cells);
