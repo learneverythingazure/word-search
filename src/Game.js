@@ -8,10 +8,14 @@ import "./styles.css";
 export default function Game() {
   const [numRows, numCols] = [12, 12];
   const [questionCells] = useState(new Cells(numRows, numCols));
+  const [expectedCells] = useState(new Cells(numRows, numCols));
   const [actualCells, setActualCells] = useState(new Cells(numRows, numCols));
+  const [status, setStatus] = useState("");
 
   const words = getWords();
-  const placed_words = words.filter((word) => placeWord(questionCells, word));
+  const [placedWords] = useState(
+    words.filter((word) => placeWord(questionCells, expectedCells, word))
+  );
 
   questionCells.fillEmptyCells(numRows, numCols);
 
@@ -22,11 +26,14 @@ export default function Game() {
           questionCells={questionCells}
           actualCells={actualCells}
           setActualCells={setActualCells}
+          expectedCells={expectedCells}
+          status={status}
+          setStatus={setStatus}
         />
       </div>
       <div className="game-info">
         <ol>
-          {placed_words.map((word) => (
+          {placedWords.map((word) => (
             <li key={word}>{word}</li>
           ))}
         </ol>
