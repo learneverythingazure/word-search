@@ -8,7 +8,7 @@ function Square({ value }) {
 function Board({ cells }) {
   return (
     <>
-      {cells.map((item) => (
+      {cells.map((item, row) => (
         <Square value={item} />
       ))}
     </>
@@ -16,6 +16,6 @@ function Board({ cells }) {
 }
 
 export default function App() {
-  const [cells] = useState([Array(9).fill("B")]);
+  const [cells] = useState(Array(9).fill("A"));
   return <Board cells={cells} />;
 }
