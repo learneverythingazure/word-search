@@ -19,10 +19,14 @@ function Board({ cells }) {
   );
 }
 
-function random_letter() {
-  const upper_letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  let i = Math.floor(Math.random() * upper_letters.length);
-  return upper_letters.charAt(i);
+function generate_empty_cells(numRows, numCols) {
+  return Array(numRows)
+    .fill(" ")
+    .map(() => new Array(numCols).fill(" "));
+}
+
+function get_words() {
+  return ["ALPHA", "BRAVO", "CHARLIE", "DELTA", "ECHO", "FOXTROT"];
 }
 
 function random_direction() {
@@ -35,10 +39,6 @@ function random_coordinate(numRows, numCols) {
   return [row, col];
 }
 
-function get_words() {
-  return ["ALPHA", "BRAVO", "CHARLIE", "DELTA", "ECHO", "FOXTROT"];
-}
-
 function place_word(numRows, numCols, cells, word) {
   const isVertical = random_direction();
   const [row, col] = random_coordinate(numRows, numCols);
@@ -46,30 +46,33 @@ function place_word(numRows, numCols, cells, word) {
   if (isVertical && numRows - row >= word.length) {
     for (let i = 0; i < word.length; i++) {
       if (cells[row + i][col] !== " " && cells[row + i][col] !== word[i]) {
-        return;
+        return false;
       }
     }
     [...word].map((c, i) => (cells[row + i][col] = c));
+    return true;
   }
 
   if (!isVertical && numCols - col >= word.length) {
     for (let i = 0; i < word.length; i++) {
       if (cells[row][col + i] !== " " && cells[row][col + i] !== word[i]) {
-        return;
+        return false;
       }
     }
     [...word].map((c, i) => (cells[row][col + i] = c));
+    return true;
   }
+
+  return false;
 }
 
-function generate_cells(words) {
-  const [numRows, numCols] = [12, 12];
-  const cells = Array(numRows)
-    .fill(" ")
-    .map(() => new Array(numCols).fill(" "));
+function random_letter() {
+  const upper_letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  let i = Math.floor(Math.random() * upper_letters.length);
+  return upper_letters.charAt(i);
+}
 
-  words.map((word) => place_word(numRows, numCols, cells, word));
-
+function fill_empty_cells(numRows, numCols, cells) {
   for (let row = 0; row < numRows; row++) {
     for (let col = 0; col < numCols; col++) {
       if (cells[row][col] === " ") {
@@ -83,8 +86,14 @@ function generate_cells(words) {
 
 export default function Game() {
   const [numRows, numCols] = [12, 12];
+  const cells = generate_empty_cells(numRows, numCols);
+
   const words = get_words();
-  const cells = generate_cells(words);
+  const placed_words = words.filter((word) =>
+    place_word(numRows, numCols, cells, word)
+  );
+
+  fill_empty_cells(numRows, numCols, cells);
 
   return (
     <div className="game">
@@ -93,13 +102,11 @@ export default function Game() {
       </div>
       <div className="game-info">
         <ol>
-          {words.map((word) => (
+          {placed_words.map((word) => (
             <li key={word}>{word}</li>
           ))}
         </ol>
       </div>
     </div>
   );
-
-  return <Board cells={cells} />;
 }
