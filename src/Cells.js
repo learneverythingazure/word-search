@@ -19,7 +19,6 @@ export default class Cells {
   }
 
   setCellValue(row, col, value) {
-    console.log(`value: ${value}`);
     this.cells[row * this.numCols + col] = value;
   }
 

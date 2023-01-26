@@ -12,8 +12,8 @@ function getRandomCoordinate(numRows, numCols) {
   return [row, col];
 }
 
-function canFill(numRows, numCols, cells, word, isVertical, row, col) {
-  if (isVertical && numRows - row >= word.length) {
+function canFill(cells, word, isVertical, row, col) {
+  if (isVertical && cells.numRows - row >= word.length) {
     for (let i = 0; i < word.length; i++) {
       let cellValue = cells.getCellValue(row + i, col);
       if (cellValue !== " " && cellValue !== word[i]) {
@@ -23,7 +23,7 @@ function canFill(numRows, numCols, cells, word, isVertical, row, col) {
     return true;
   }
 
-  if (!isVertical && numCols - col >= word.length) {
+  if (!isVertical && cells.numCols - col >= word.length) {
     for (let i = 0; i < word.length; i++) {
       let cellValue = cells.getCellValue(row, col + i);
       if (cellValue !== " " && cellValue !== word[i]) {
@@ -44,11 +44,11 @@ function fillWord(cells, word, isVertical, row, col) {
   }
 }
 
-function placeWord(numRows, numCols, cells, word, numRetries = 3) {
+function placeWord(cells, word, numRetries = 3) {
   while (numRetries > 0) {
     let isVertical = getRandomDirection();
-    let [row, col] = getRandomCoordinate(numRows, numCols);
-    if (canFill(numRows, numCols, cells, word, isVertical, row, col)) {
+    let [row, col] = getRandomCoordinate(cells.numRows, cells.numCols);
+    if (canFill(cells, word, isVertical, row, col)) {
       fillWord(cells, word, isVertical, row, col);
       return true;
     }
