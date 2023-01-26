@@ -15,7 +15,8 @@ function getRandomCoordinate(numRows, numCols) {
 function canFill(numRows, numCols, cells, word, isVertical, row, col) {
   if (isVertical && numRows - row >= word.length) {
     for (let i = 0; i < word.length; i++) {
-      if (cells[row + i][col] !== " " && cells[row + i][col] !== word[i]) {
+      let cellValue = cells.getCellValue(row + i, col);
+      if (cellValue !== " " && cellValue !== word[i]) {
         return false;
       }
     }
@@ -24,7 +25,8 @@ function canFill(numRows, numCols, cells, word, isVertical, row, col) {
 
   if (!isVertical && numCols - col >= word.length) {
     for (let i = 0; i < word.length; i++) {
-      if (cells[row][col + i] !== " " && cells[row][col + i] !== word[i]) {
+      let cellValue = cells.getCellValue(row, col + i);
+      if (cellValue !== " " && cellValue !== word[i]) {
         return false;
       }
     }
@@ -36,9 +38,9 @@ function canFill(numRows, numCols, cells, word, isVertical, row, col) {
 
 function fillWord(cells, word, isVertical, row, col) {
   if (isVertical) {
-    [...word].map((c, i) => (cells[row + i][col] = c));
+    [...word].map((c, i) => cells.setCellValue(row + i, col, c));
   } else {
-    [...word].map((c, i) => (cells[row][col + i] = c));
+    [...word].map((c, i) => cells.setCellValue(row, col + i, c));
   }
 }
 
