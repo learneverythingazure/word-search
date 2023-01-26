@@ -2,25 +2,8 @@ import { useState } from "react";
 
 import { getWords, placeWord } from "./Words";
 import { generateEmptyCells, fillEmptyCells } from "./Cells";
+import Board from "./Board";
 import "./styles.css";
-
-function Square({ value }) {
-  return <button className="square">{value}</button>;
-}
-
-function Board({ cells }) {
-  return (
-    <>
-      {cells.map((row_cells) => (
-        <div className="board-row">
-          {row_cells.map((row_col_cell) => (
-            <Square value={row_col_cell} />
-          ))}
-        </div>
-      ))}
-    </>
-  );
-}
 
 export default function Game() {
   const [numRows, numCols] = [12, 12];
