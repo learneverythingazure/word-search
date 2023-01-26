@@ -62,12 +62,11 @@ function place_word(numRows, numCols, cells, word) {
   }
 }
 
-function generate_cells() {
+function generate_cells(words) {
   const [numRows, numCols] = [12, 12];
   const cells = Array(numRows)
     .fill(" ")
     .map(() => new Array(numCols).fill(" "));
-  const words = get_words();
 
   words.map((word) => place_word(numRows, numCols, cells, word));
 
@@ -84,7 +83,23 @@ function generate_cells() {
 
 export default function Game() {
   const [numRows, numCols] = [12, 12];
-  const [cells] = useState(generate_cells());
+  const words = get_words();
+  const cells = generate_cells(words);
+
+  return (
+    <div className="game">
+      <div className="game-board">
+        <Board cells={cells} />
+      </div>
+      <div className="game-info">
+        <ol>
+          {words.map((word) => (
+            <li key={word}>{word}</li>
+          ))}
+        </ol>
+      </div>
+    </div>
+  );
 
   return <Board cells={cells} />;
 }
