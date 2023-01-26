@@ -44,12 +44,16 @@ function fillWord(cells, word, isVertical, row, col) {
   }
 }
 
-function placeWord(cells, word, numRetries = 3) {
+function placeWord(questionCells, expectedCells, word, numRetries = 3) {
   while (numRetries > 0) {
     let isVertical = getRandomDirection();
-    let [row, col] = getRandomCoordinate(cells.numRows, cells.numCols);
-    if (canFill(cells, word, isVertical, row, col)) {
-      fillWord(cells, word, isVertical, row, col);
+    let [row, col] = getRandomCoordinate(
+      questionCells.numRows,
+      questionCells.numCols
+    );
+    if (canFill(questionCells, word, isVertical, row, col)) {
+      fillWord(questionCells, word, isVertical, row, col);
+      fillWord(expectedCells, word, isVertical, row, col);
       return true;
     }
     numRetries -= 1;

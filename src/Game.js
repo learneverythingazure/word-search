@@ -7,21 +7,33 @@ import "./styles.css";
 
 export default function Game() {
   const [numRows, numCols] = [12, 12];
-  const [cells] = useState(new Cells(numRows, numCols));
+  const [questionCells] = useState(new Cells(numRows, numCols));
+  const [expectedCells] = useState(new Cells(numRows, numCols));
+  const [actualCells, setActualCells] = useState(new Cells(numRows, numCols));
+  const [status, setStatus] = useState("");
 
   const words = getWords();
-  const placed_words = words.filter((word) => placeWord(cells, word));
+  const [placedWords] = useState(
+    words.filter((word) => placeWord(questionCells, expectedCells, word))
+  );
 
-  cells.fillEmptyCells(numRows, numCols);
+  questionCells.fillEmptyCells(numRows, numCols);
 
   return (
     <div className="game">
       <div className="game-board">
-        <Board cells={cells} />
+        <Board
+          questionCells={questionCells}
+          actualCells={actualCells}
+          setActualCells={setActualCells}
+          expectedCells={expectedCells}
+          status={status}
+          setStatus={setStatus}
+        />
       </div>
       <div className="game-info">
         <ol>
-          {placed_words.map((word) => (
+          {placedWords.map((word) => (
             <li key={word}>{word}</li>
           ))}
         </ol>
