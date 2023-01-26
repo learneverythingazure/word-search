@@ -4,10 +4,13 @@ import "./styles.css";
 export default function Board({ cells }) {
   return (
     <>
-      {cells.toTwoDimensional().map((rowCells) => (
-        <div className="board-row">
-          {rowCells.map((rowColCell) => (
-            <Square value={rowColCell} />
+      {cells.toTwoDimensional().map((row, rowIndex) => (
+        <div key={rowIndex} className="board-row">
+          {row.map((_, colIndex) => (
+            <Square
+              key={rowIndex * cells.numCols + colIndex}
+              value={cells.getCellValue(rowIndex, colIndex)}
+            />
           ))}
         </div>
       ))}

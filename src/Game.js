@@ -10,9 +10,7 @@ export default function Game() {
   const [cells] = useState(new Cells(numRows, numCols));
 
   const words = getWords();
-  const placed_words = words.filter((word) =>
-    placeWord(numRows, numCols, cells, word)
-  );
+  const placed_words = words.filter((word) => placeWord(cells, word));
 
   cells.fillEmptyCells(numRows, numCols);
 
