@@ -42,13 +42,15 @@ function fillWord(cells, word, isVertical, row, col) {
   }
 }
 
-function placeWord(numRows, numCols, cells, word) {
-  const isVertical = getRandomDirection();
-  const [row, col] = getRandomCoordinate(numRows, numCols);
-
-  if (canFill(numRows, numCols, cells, word, isVertical, row, col)) {
-    fillWord(cells, word, isVertical, row, col);
-    return true;
+function placeWord(numRows, numCols, cells, word, numRetries = 3) {
+  while (numRetries > 0) {
+    let isVertical = getRandomDirection();
+    let [row, col] = getRandomCoordinate(numRows, numCols);
+    if (canFill(numRows, numCols, cells, word, isVertical, row, col)) {
+      fillWord(cells, word, isVertical, row, col);
+      return true;
+    }
+    numRetries -= 1;
   }
 
   return false;
