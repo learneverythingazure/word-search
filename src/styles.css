@@ -18,6 +18,14 @@
   width: 34px;
 }
 
+.selected {
+  background: yellow;
+}
+
+.not-selected {
+  background: #fff;
+}
+
 .board-row:after {
   clear: both;
   content: "";
