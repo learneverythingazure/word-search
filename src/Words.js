@@ -22,7 +22,7 @@ function canFill(numRows, numCols, cells, word, isVertical, row, col) {
     return true;
   }
 
-  if (isVertical && numCols - col >= word.length) {
+  if (!isVertical && numCols - col >= word.length) {
     for (let i = 0; i < word.length; i++) {
       if (cells[row][col + i] !== " " && cells[row][col + i] !== word[i]) {
         return false;
