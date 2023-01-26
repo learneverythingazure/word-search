@@ -1,20 +1,20 @@
 import { useState } from "react";
 
 import { getWords, placeWord } from "./Words";
-import { generateEmptyCells, fillEmptyCells } from "./Cells";
+import Cells from "./Cells";
 import Board from "./Board";
 import "./styles.css";
 
 export default function Game() {
   const [numRows, numCols] = [12, 12];
-  const cells = generateEmptyCells(numRows, numCols);
+  const [cells] = useState(new Cells(numRows, numCols));
 
   const words = getWords();
   const placed_words = words.filter((word) =>
     placeWord(numRows, numCols, cells, word)
   );
 
-  fillEmptyCells(numRows, numCols, cells);
+  cells.fillEmptyCells(numRows, numCols);
 
   return (
     <div className="game">
